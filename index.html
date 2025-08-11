@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jaime Rojas - Personal Homepage</title>
+  <meta name="description" content="Jaime Rojas - Software Engineer, Innovator, and Technology Enthusiast. Connect with me and learn more about my work and interests.">
+  <link rel="icon" href="https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2">
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f7f7f7; color: #222; }
+    header { background: #222; color: #fff; padding: 2rem 1rem; text-align: center; }
+    .avatar { width: 120px; border-radius: 50%; margin-bottom: 1rem; }
+    main { max-width: 700px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); padding: 2rem; }
+    h1 { margin-top: 0; }
+    .section { margin-bottom: 2rem; }
+    .contact a { color: #0073b1; text-decoration: none; }
+    .pushy-btn { background: #0073b1; color: #fff; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+    .pushy-btn:hover { background: #005983; }
+  </style>
+  <!-- Pushy.me SDK -->
+  <script src="https://sdk.pushy.me/web/1.0.13/pushy-sdk.js"></script>
+</head>
+<body>
+  <header>
+    <img src="https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2" alt="Jaime Rojas" class="avatar">
+    <h1>Jaime Rojas</h1>
+    <p>Software Engineer | Innovator | Technology Enthusiast</p>
+  </header>
+  <main>
+    <section class="section about">
+      <h2>About Me</h2>
+      <p>Hello! I'm Jaime Rojas, a passionate software engineer with a strong background in building innovative solutions and driving technology projects. I enjoy working on challenging problems and collaborating with talented teams to create impactful products.</p>
+    </section>
+    <section class="section experience">
+      <h2>Experience</h2>
+      <ul>
+        <li>Software Engineer - Various innovative projects (see LinkedIn for details)</li>
+        <!-- Add more experience as needed -->
+      </ul>
+    </section>
+    <section class="section education">
+      <h2>Education</h2>
+      <ul>
+        <li>See LinkedIn for full education details</li>
+      </ul>
+    </section>
+    <section class="section contact">
+      <h2>Contact</h2>
+      <p>Connect with me on <a href="https://www.linkedin.com/in/jaimera/" target="_blank">LinkedIn</a></p>
+    </section>
+    <section class="section pushy">
+      <h2>Stay Updated</h2>
+      <button class="pushy-btn" onclick="subscribePushy()">Enable Web Push Notifications</button>
+      <p id="pushy-status"></p>
+    </section>
+  </main>
+  <script>
+    // Pushy.me Web Push subscription
+    function subscribePushy() {
+      Pushy.register({ appId: '6899d4d9843b8fff6e4e9964' }) // TODO: Replace with your Pushy App ID
+        .then(function(deviceToken) {
+          document.getElementById('pushy-status').textContent = 'Push notifications enabled!';
+          // Optionally send deviceToken to your backend for notifications
+        })
+        .catch(function(err) {
+          document.getElementById('pushy-status').textContent = 'Failed to enable notifications: ' + err;
+        });
+    }
+  </script>
+</body>
+</html>
