@@ -142,6 +142,23 @@
 
           // Display an alert with message sent from server
           alert("Received notification: " + message);
+
+          // publish using browser to OS as a browser notification
+          if (Notification.permission === "granted") {
+            new Notification("Pushy Notification", {
+              body: message,
+              icon: "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+            });
+          } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+              if (permission === "granted") {
+                new Notification("Pushy Notification", {
+                  body: message,
+                  icon: "https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2",
+                });
+              }
+            });
+          }
         });
       }
     </script>
