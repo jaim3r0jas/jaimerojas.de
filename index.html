@@ -124,6 +124,24 @@ img:hover,
 }
 .handle-pill-row { display: flex; justify-content: center; }
 
+/* Language switch — top-right utility bar above the masthead-row */
+.lang-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 0.5rem;
+}
+.lang-switch { display: inline-flex; gap: 0.4rem; align-items: center; }
+.lang-btn {
+  background: none; border: none; padding: 0;
+  cursor: pointer;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--ink-muted); transition: color 0.2s;
+  letter-spacing: 0.04em;
+}
+.lang-btn:hover { color: var(--accent); }
+.lang-btn[aria-pressed="true"] { color: var(--ink); font-weight: 500; }
+.lang-sep { color: var(--ink-faint); font-size: 11px; }
+
 /* Bio */
 .bio {
   display: grid; grid-template-columns: 200px 1fr;
@@ -441,6 +459,34 @@ hr.double {
 /* Footer */
 footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; font-family: var(--mono); color: var(--ink); flex-wrap: wrap; gap: 0.5rem; }
 
+/* Show-more / show-less toggle — base hidden, only surfaces on mobile */
+.show-more-toggle {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0.5rem 0 1rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-cool);
+  cursor: pointer;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.2s;
+}
+.show-more-toggle:hover { color: var(--accent); }
+.show-more-toggle .chev {
+  width: 10px; height: 10px;
+  stroke: currentColor;
+  transition: transform 0.25s ease;
+}
+.chapter-header.expanded .show-more-toggle .chev,
+.carousel-slide.expanded .show-more-toggle .chev {
+  transform: rotate(180deg);
+}
+
 /* Animations */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -469,6 +515,29 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
   .tl-company { display: none; }
   .phase-label { font-size: 8.5px; letter-spacing: 0.04em; }
   footer { flex-direction: column; align-items: flex-start; }
+
+  /* Mobile-only: collapse long-form content behind a "Show more" toggle */
+  .show-more-toggle { display: inline-flex; }
+
+  /* Chapter intro — clamp to 2 lines, drop the divider while collapsed */
+  .slide-intro {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .chapter-header.expanded .slide-intro {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
+
+  /* Work body bullets — hidden by default on mobile, expanded per-slide */
+  .work-body ul { display: none; }
+  .carousel-slide.expanded .work-body ul { display: block; }
 }
 </style>
 </head>
@@ -477,9 +546,18 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
 <div class="site">
 
   <header class="masthead">
+    <div class="lang-row">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button class="lang-btn" data-lang="en" aria-pressed="true">EN</button>
+        <span class="lang-sep" aria-hidden="true">·</span>
+        <button class="lang-btn" data-lang="es" aria-pressed="false">ES</button>
+        <span class="lang-sep" aria-hidden="true">·</span>
+        <button class="lang-btn" data-lang="de" aria-pressed="false">DE</button>
+      </div>
+    </div>
     <div class="masthead-row">
       <div class="masthead-side masthead-left">
-        <span class="tagline">Pragmatic · Curious · Resilient · Purposeful</span>
+        <span class="tagline" data-i18n="tagline">Pragmatic · Curious · Resilient · Purposeful</span>
         <hr />
       </div>
       <h1 class="display">Jaime Rojas</h1>
@@ -507,7 +585,7 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
       <img src="images/jaime.png" alt="Jaime Rojas" />
     </div>
     <div class="bio-text">
-      <p><strong>Jaime Rojas</strong> is a backend engineer and builder based in Munich, with 15+ years of experience turning hard problems into working software. By day he's a Senior Backend Engineer at <a href="https://safenow.app" target="_blank" rel="noopener">SafeNow</a>. On the side, he's building <a href="https://famlo.app" target="_blank" rel="noopener">Famlo</a> — an AI-native family operating system where chores, finances, meals, goals, and the calendar all flow from one place: how families actually talk to each other.</p>
+      <p data-i18n-html="bio"><strong>Jaime Rojas</strong> is a backend engineer and builder based in Munich, with 15+ years of experience turning hard problems into working software. By day he's a Senior Backend Engineer at <a href="https://safenow.app" target="_blank" rel="noopener">SafeNow</a>. On the side, he's building <a href="https://famlo.app" target="_blank" rel="noopener">Famlo</a> — an AI-native family operating system where chores, finances, meals, goals, and the calendar all flow from one place: how families actually talk to each other.</p>
     </div>
   </section>
 
@@ -516,13 +594,13 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
   <section aria-labelledby="now-heading">
     <div class="section-heading">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      <h2 id="now-heading"><strong>Now</strong></h2>
+      <h2 id="now-heading" data-i18n-html="now.heading"><strong>Now</strong></h2>
     </div>
     <div class="now-body">
-      <p>By day at SafeNow, by night at Famlo.</p>
-      <p>Going full beast-mode on AI — learning how the new models, tools, and patterns let one builder ship what used to take a small team. Famlo is the lab; every prototype either compounds into the product or teaches why it shouldn't.</p>
-      <p>The why starts personal: a young family far from home, and no app that actually held daily life together. The bigger why follows — Famlo would have needed a team a year ago. Today, with AI as leverage, it's doable solo, and the families it's built for don't have to wait for someone else to build it.</p>
-      <p>The deeper bet: AI doesn't just speed up the work, it changes what software is allowed to feel like. Famlo's signature — communication at the root, modules flowing into each other naturally — only exists because AI can finally be the connective tissue, not a feature in a settings menu.</p>
+      <p data-i18n="now.p1">By day at SafeNow, by night at Famlo.</p>
+      <p data-i18n="now.p2">Going full beast-mode on AI — learning how the new models, tools, and patterns let one builder ship what used to take a small team. Famlo is the lab; every prototype either compounds into the product or teaches why it shouldn't.</p>
+      <p data-i18n="now.p3">The why starts personal: a young family far from home, and no app that actually held daily life together. The bigger why follows — Famlo would have needed a team a year ago. Today, with AI as leverage, it's doable solo, and the families it's built for don't have to wait for someone else to build it.</p>
+      <p data-i18n="now.p4">The deeper bet: AI doesn't just speed up the work, it changes what software is allowed to feel like. Famlo's signature — communication at the root, modules flowing into each other naturally — only exists because AI can finally be the connective tissue, not a feature in a settings menu.</p>
     </div>
   </section>
 
@@ -532,67 +610,67 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
   <section aria-labelledby="work-heading">
     <div class="section-heading">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-      <h2 id="work-heading"><strong>Work</strong></h2>
+      <h2 id="work-heading" data-i18n-html="work.heading"><strong>Work</strong></h2>
     </div>
-    <p class="section-subtitle">Each dot is a chapter — pick a year to read the story.</p>
+    <p class="section-subtitle" data-i18n="work.subtitle">Each dot is a chapter — pick a year to read the story.</p>
 
     <!-- Timeline: 4 chapter groups, 7 dots total -->
     <div class="timeline-nav" role="tablist" aria-label="Career timeline">
 
       <div class="phase-group" data-phase="I">
-        <span class="phase-label">School of doing</span>
+        <span class="phase-label" data-i18n="phase.I">School of doing</span>
         <div class="phase-dots">
           <button class="tl-year" data-slide="0" role="tab" aria-selected="false" aria-controls="slide-0">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">Sep 2010</span>
+            <span class="tl-year-label" data-i18n="year.0">Sep 2010</span>
             <span class="tl-company">Claro</span>
           </button>
         </div>
       </div>
 
       <div class="phase-group" data-phase="II">
-        <span class="phase-label">Modern product</span>
+        <span class="phase-label" data-i18n="phase.II">Modern product</span>
         <div class="phase-dots">
           <button class="tl-year" data-slide="1" role="tab" aria-selected="false" aria-controls="slide-1">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">Apr 2019</span>
+            <span class="tl-year-label" data-i18n="year.1">Apr 2019</span>
             <span class="tl-company">Metadata</span>
           </button>
           <button class="tl-year" data-slide="2" role="tab" aria-selected="false" aria-controls="slide-2">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">Jun 2022</span>
+            <span class="tl-year-label" data-i18n="year.2">Jun 2022</span>
             <span class="tl-company">Personio</span>
           </button>
         </div>
       </div>
 
       <div class="phase-group" data-phase="III">
-        <span class="phase-label">Crisis classroom</span>
+        <span class="phase-label" data-i18n="phase.III">Crisis classroom</span>
         <div class="phase-dots">
           <button class="tl-year" data-slide="3" role="tab" aria-selected="false" aria-controls="slide-3">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">Jan 2024</span>
+            <span class="tl-year-label" data-i18n="year.3">Jan 2024</span>
             <span class="tl-company">Personio</span>
           </button>
           <button class="tl-year" data-slide="4" role="tab" aria-selected="false" aria-controls="slide-4">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">Apr 2024</span>
+            <span class="tl-year-label" data-i18n="year.4">Apr 2024</span>
             <span class="tl-company">enmacc</span>
           </button>
         </div>
       </div>
 
       <div class="phase-group" data-phase="IV">
-        <span class="phase-label">Purpose-driven</span>
+        <span class="phase-label" data-i18n="phase.IV">Purpose-driven</span>
         <div class="phase-dots">
           <button class="tl-year" data-slide="5" role="tab" aria-selected="false" aria-controls="slide-5">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">Nov 2024 <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+            <span class="tl-year-label" data-i18n-html="year.5">Nov 2024 <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
             <span class="tl-company">SafeNow</span>
           </button>
           <button class="tl-year active" data-slide="6" role="tab" aria-selected="true" aria-controls="slide-6">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">Mar 2026 <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
+            <span class="tl-year-label" data-i18n-html="year.6">Mar 2026 <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
             <span class="tl-company">Famlo</span>
           </button>
         </div>
@@ -605,6 +683,10 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
       <p class="slide-phase" id="ch-phase"></p>
       <p class="slide-period" id="ch-period"></p>
       <p class="slide-intro" id="ch-intro"></p>
+      <button class="show-more-toggle" id="ch-toggle" type="button" aria-expanded="false">
+        <span class="show-more-label">Show more</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
     </div>
 
     <!-- Slides — work-row only -->
@@ -615,14 +697,14 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         <div class="work-row">
           <div class="work-thumb"><img src="images/claro.svg" alt="Claro" /></div>
           <div class="work-body">
-            <h3>Claro — Engineer &amp; Transformation Lead</h3>
-            <p>Software Engineer → Lead Engineer → Agile Coach → Transformation Program Manager. Four roles, one company, nine years of compounding learning.</p>
+            <h3 data-i18n="slide.0.title">Claro — Engineer &amp; Transformation Lead</h3>
+            <p data-i18n="slide.0.desc">Software Engineer → Lead Engineer → Agile Coach → Transformation Program Manager. Four roles, one company, nine years of compounding learning.</p>
             <ul>
-              <li>Built a unified attention-center platform integrating 30+ systems — cutting rep training from 3 months to 2 weeks</li>
-              <li>Reduced customer wait times 4× and grew prepaid mobile revenue 10×</li>
-              <li>Led a full Agile transformation, coaching 30+ engineers across IT, Legal, Compliance, and QA</li>
-              <li>Launched knowledge-sharing sessions that became a lasting part of company culture</li>
-              <li>Gold Award for portal team excellence in customer service</li>
+              <li data-i18n="slide.0.b0">Built a unified attention-center platform integrating 30+ systems — cutting rep training from 3 months to 2 weeks</li>
+              <li data-i18n="slide.0.b1">Reduced customer wait times 4× and grew prepaid mobile revenue 10×</li>
+              <li data-i18n="slide.0.b2">Led a full Agile transformation, coaching 30+ engineers across IT, Legal, Compliance, and QA</li>
+              <li data-i18n="slide.0.b3">Launched knowledge-sharing sessions that became a lasting part of company culture</li>
+              <li data-i18n="slide.0.b4">Gold Award for portal team excellence in customer service</li>
             </ul>
             <a href="https://www.claro.com.do" target="_blank" rel="noopener" class="work-link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
@@ -637,13 +719,13 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         <div class="work-row">
           <div class="work-thumb"><img src="images/metadata.svg" alt="Metadata.io" /></div>
           <div class="work-body">
-            <h3>Metadata.io — Senior Backend Engineer</h3>
-            <p>A B2B demand generation platform in San Francisco. Three years spanning a full platform rewrite and key marketplace integrations that significantly expanded the product's commercial reach.</p>
+            <h3 data-i18n="slide.1.title">Metadata.io — Senior Backend Engineer</h3>
+            <p data-i18n="slide.1.desc">A B2B demand generation platform in San Francisco. Three years spanning a full platform rewrite and key marketplace integrations that significantly expanded the product's commercial reach.</p>
             <ul>
-              <li>Helped redesign a monolith into domain-driven microservices for engineering scale</li>
-              <li>Led the Oracle Eloqua integration from kickoff to pilot — on time, strong adoption</li>
-              <li>Doubled campaign match rates through data-driven optimisation</li>
-              <li>Rewrote the ETL pipeline and restructured Elasticsearch indexes for faster enrichment</li>
+              <li data-i18n="slide.1.b0">Helped redesign a monolith into domain-driven microservices for engineering scale</li>
+              <li data-i18n="slide.1.b1">Led the Oracle Eloqua integration from kickoff to pilot — on time, strong adoption</li>
+              <li data-i18n="slide.1.b2">Doubled campaign match rates through data-driven optimisation</li>
+              <li data-i18n="slide.1.b3">Rewrote the ETL pipeline and restructured Elasticsearch indexes for faster enrichment</li>
             </ul>
             <a href="https://metadata.io" target="_blank" rel="noopener" class="work-link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
@@ -658,12 +740,12 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         <div class="work-row">
           <div class="work-thumb"><img src="images/personio.svg" alt="Personio" /></div>
           <div class="work-body">
-            <h3>Personio — Software Engineer</h3>
-            <p>Europe's leading HR platform — and the company that brought Jaime's family to Munich. He worked across Payroll Communications and Zero-Trust Security Adoption.</p>
+            <h3 data-i18n="slide.2.title">Personio — Software Engineer</h3>
+            <p data-i18n="slide.2.desc">Europe's leading HR platform — and the company that brought Jaime's family to Munich. He worked across Payroll Communications and Zero-Trust Security Adoption.</p>
             <ul>
-              <li>Delivered electronic payroll communications end-to-end under audit deadlines, enabling a strategic product launch</li>
-              <li>Led zero-trust adoption and wrote documentation that helped other teams skip the hardest parts</li>
-              <li>Built tooling that unblocked all communications testing when third-party sandboxes failed</li>
+              <li data-i18n="slide.2.b0">Delivered electronic payroll communications end-to-end under audit deadlines, enabling a strategic product launch</li>
+              <li data-i18n="slide.2.b1">Led zero-trust adoption and wrote documentation that helped other teams skip the hardest parts</li>
+              <li data-i18n="slide.2.b2">Built tooling that unblocked all communications testing when third-party sandboxes failed</li>
             </ul>
             <a href="https://www.personio.com" target="_blank" rel="noopener" class="work-link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
@@ -678,8 +760,8 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         <div class="work-row">
           <div class="work-thumb"><img src="images/personio.svg" alt="Personio" /></div>
           <div class="work-body">
-            <h3>Personio — The layoff</h3>
-            <p>January 2024. Jaime was let go in the first wave of layoffs at the company that had brought his family to Munich — the end of Chapter II and the doorway into Chapter III. The story of what came next lives in the chapter intro above.</p>
+            <h3 data-i18n="slide.3.title">Personio — The layoff</h3>
+            <p data-i18n="slide.3.desc">January 2024. Jaime was let go in the first wave of layoffs at the company that had brought his family to Munich — the end of Chapter II and the doorway into Chapter III. The story of what came next lives in the chapter intro above.</p>
           </div>
         </div>
       </div>
@@ -689,11 +771,11 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         <div class="work-row">
           <div class="work-thumb"><img src="images/enmacc.svg" alt="enmacc" /></div>
           <div class="work-body">
-            <h3>enmacc — Software Engineer</h3>
-            <p>A European energy trading marketplace. Joined with genuine excitement after a tough job search — and learned quickly that enthusiasm alone can't bridge a fundamental mismatch in communication style, expectations, and working culture.</p>
+            <h3 data-i18n="slide.4.title">enmacc — Software Engineer</h3>
+            <p data-i18n="slide.4.desc">A European energy trading marketplace. Joined with genuine excitement after a tough job search — and learned quickly that enthusiasm alone can't bridge a fundamental mismatch in communication style, expectations, and working culture.</p>
             <ul>
-              <li>Five months that taught more about cultural fit and self-knowledge than any successful role had</li>
-              <li>Reinforced the value of asking the hard questions before signing — a lesson carried forward</li>
+              <li data-i18n="slide.4.b0">Five months that taught more about cultural fit and self-knowledge than any successful role had</li>
+              <li data-i18n="slide.4.b1">Reinforced the value of asking the hard questions before signing — a lesson carried forward</li>
             </ul>
             <a href="https://enmacc.com" target="_blank" rel="noopener" class="work-link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
@@ -708,12 +790,12 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         <div class="work-row">
           <div class="work-thumb"><img src="images/safenow.svg" alt="SafeNow" /></div>
           <div class="work-body">
-            <h3>SafeNow — Senior Backend Engineer</h3>
-            <p>A personal safety platform built for the moments when seconds count. There are companies you join for the career move, and companies you join because the mission actually means something. SafeNow was the latter — the idea that software could be the difference between someone getting help in time, or not, is not something Jaime takes lightly.</p>
+            <h3 data-i18n="slide.5.title">SafeNow — Senior Backend Engineer</h3>
+            <p data-i18n="slide.5.desc">A personal safety platform built for the moments when seconds count. There are companies you join for the career move, and companies you join because the mission actually means something. SafeNow was the latter — the idea that software could be the difference between someone getting help in time, or not, is not something Jaime takes lightly.</p>
             <ul>
-              <li>Designing and shipping Kotlin backend services built for global scale</li>
-              <li>Championing test automation and continuous engineering improvement</li>
-              <li>Fast-paced environment where quality and pace coexist by design</li>
+              <li data-i18n="slide.5.b0">Designing and shipping Kotlin backend services built for global scale</li>
+              <li data-i18n="slide.5.b1">Championing test automation and continuous engineering improvement</li>
+              <li data-i18n="slide.5.b2">Fast-paced environment where quality and pace coexist by design</li>
             </ul>
             <a href="https://safenow.app" target="_blank" rel="noopener" class="work-link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
@@ -728,13 +810,13 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         <div class="work-row">
           <div class="work-thumb"><img src="images/famlo.svg" alt="Famlo" /></div>
           <div class="work-body">
-            <h3>Famlo — Family Operating System</h3>
-            <p>Built solo, driven by real life. No app actually held the family's life together after moving to Munich with twin 5-year-olds. Famlo is the answer — a family OS where communication is the root and everything else derives from it. Families talk, decisions follow, life happens. AI weaves the modules together so a complex platform feels like chatting with another member of the family.</p>
+            <h3 data-i18n="slide.6.title">Famlo — Family Operating System</h3>
+            <p data-i18n="slide.6.desc">Built solo, driven by real life. No app actually held the family's life together after moving to Munich with twin 5-year-olds. Famlo is the answer — a family OS where communication is the root and everything else derives from it. Families talk, decisions follow, life happens. AI weaves the modules together so a complex platform feels like chatting with another member of the family.</p>
             <ul>
-              <li>Comms-first by design — chores, meals, finances, goals, and calendar all derive from how the family already talks</li>
-              <li>AI ties the modules together so the platform feels like a conversation, not an interface</li>
-              <li>Privacy-first — no trackers, no third-party data sharing</li>
-              <li>Waitlist beta, built entirely solo alongside full-time work</li>
+              <li data-i18n="slide.6.b0">Comms-first by design — chores, meals, finances, goals, and calendar all derive from how the family already talks</li>
+              <li data-i18n="slide.6.b1">AI ties the modules together so the platform feels like a conversation, not an interface</li>
+              <li data-i18n="slide.6.b2">Privacy-first — no trackers, no third-party data sharing</li>
+              <li data-i18n="slide.6.b3">Waitlist beta, built entirely solo alongside full-time work</li>
             </ul>
             <a href="https://famlo.app" target="_blank" rel="noopener" class="work-link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
@@ -766,39 +848,44 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
   <hr class="double" />
 
   <footer>
-    <span>© 2026 Jaime Rojas</span>
-    <span>Munich, Germany</span>
+    <span data-i18n="footer.copyright">© 2026 Jaime Rojas</span>
+    <span data-i18n="footer.location">Munich, Germany</span>
   </footer>
 
 </div>
 
 <script>
 (function() {
-  const years   = Array.from(document.querySelectorAll('.tl-year'));
-  const slides  = Array.from(document.querySelectorAll('.carousel-slide'));
-  const groups  = Array.from(document.querySelectorAll('.phase-group'));
-  const btnPrev = document.getElementById('btn-prev');
-  const btnNext = document.getElementById('btn-next');
-  const label   = document.getElementById('ctrl-label');
+  const html     = document.documentElement;
+  const titleEl  = document.querySelector('title');
+  const langBtns = Array.from(document.querySelectorAll('.lang-btn'));
+  const years    = Array.from(document.querySelectorAll('.tl-year'));
+  const slides   = Array.from(document.querySelectorAll('.carousel-slide'));
+  const groups   = Array.from(document.querySelectorAll('.phase-group'));
+  const btnPrev  = document.getElementById('btn-prev');
+  const btnNext  = document.getElementById('btn-next');
+  const label    = document.getElementById('ctrl-label');
   const chPhase  = document.getElementById('ch-phase');
   const chPeriod = document.getElementById('ch-period');
   const chIntro  = document.getElementById('ch-intro');
-  const total   = slides.length;
-  let current   = 6; // start on most recent (Famlo)
+  const total    = slides.length;
+  let current    = 6; // start on most recent (Famlo)
+  let lang       = 'en';
 
-  const phaseNames = [
-    'Chapter I — Claro',
-    'Chapter II — Metadata.io',
-    'Chapter II — Personio',
-    'Chapter III — Personio (layoff)',
-    'Chapter III — enmacc',
-    'Chapter IV — SafeNow',
-    'Chapter IV — Famlo'
-  ];
+  // SVG arrow used inside year labels for "ongoing" roles
+  const ARROW_SVG = '<svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>';
 
-  // Single source of truth for chapter-level copy
+  // ━━━ Carousel control label per language ━━━
+  const phaseNames = {
+    en: ['Chapter I — Claro', 'Chapter II — Metadata.io', 'Chapter II — Personio', 'Chapter III — Personio (layoff)', 'Chapter III — enmacc', 'Chapter IV — SafeNow', 'Chapter IV — Famlo'],
+    es: ['Capítulo I — Claro', 'Capítulo II — Metadata.io', 'Capítulo II — Personio', 'Capítulo III — Personio (despido)', 'Capítulo III — enmacc', 'Capítulo IV — SafeNow', 'Capítulo IV — Famlo'],
+    de: ['Kapitel I — Claro', 'Kapitel II — Metadata.io', 'Kapitel II — Personio', 'Kapitel III — Personio (Kündigung)', 'Kapitel III — enmacc', 'Kapitel IV — SafeNow', 'Kapitel IV — Famlo']
+  };
+
+  // ━━━ Chapter header copy per language ━━━
   const chapters = {
-    I: {
+    en: {
+      I: {
       phase:  'Chapter I — The school of doing',
       period: '2010 – 2018  ·  Santo Domingo, DR',
       intro:  "Nearly nine years at Claro — one of Latin America's largest telecoms — where Jaime went from writing his first production code to leading teams, coaching engineers, and running transformation programs. Messy, formative, and irreplaceable. He made mistakes, shipped things that moved real revenue, and built the conviction that great engineering is as much about people and process as it is about code."
@@ -818,10 +905,265 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
       period: 'Nov 2024 → present  ·  Munich',
       intro:  "SafeNow opened a new chapter — one where the work is chosen for what it means, not just what it pays. If SafeNow is about helping people in emergencies, Famlo is about helping families in the everyday — a family OS built on the idea that everything starts with how families communicate, with AI tying the rest together. Two different problems, one conviction: software should make people's lives genuinely better."
     }
+    },
+    es: {
+      I:   { phase: 'Capítulo I — La escuela del hacer',    period: '2010 – 2018  ·  Santo Domingo, RD',      intro: "Casi nueve años en Claro — una de las empresas de telecomunicaciones más grandes de Latinoamérica — donde Jaime pasó de escribir su primer código en producción a liderar equipos, formar ingenieros y dirigir programas de transformación. Caótico, formativo e irrepetible. Cometió errores, lanzó cosas que movieron ingresos reales y forjó la convicción de que la gran ingeniería trata tanto de personas y procesos como de código." },
+      II:  { phase: 'Capítulo II — Empresas de producto moderno', period: '2019 – 2024  ·  San Francisco → Múnich', intro: 'Dejando el mundo de las telecomunicaciones atrás, Jaime se unió al circuito de startups y scaleups — primero en San Francisco, luego en Múnich. Un reinicio completo: nuevas formas de trabajar, nuevos estándares de velocidad, nuevas expectativas de colaboración y ownership. Aprendió lo que significa entregar valor bajo presión competitiva, y cuánto oficio hay detrás de decisiones que desde fuera parecen sin esfuerzo.' },
+      III: { phase: 'Capítulo III — La crisis como aula',   period: 'Ene 2024 – Nov 2024  ·  Múnich',          intro: "En enero de 2024, Jaime fue despedido de Personio — la empresa que había traído a su familia a Alemania — en la primera de lo que se convertiría en una ola de despidos. Aún asentándose en un nuevo país con gemelos pequeños, los meses que siguieron fueron un curso intensivo de resiliencia. Tras diez semanas buscando, tenía dos ofertas. Eligió enmacc con entusiasmo genuino, y en dos meses quedó claro que no era el lugar adecuado. La lección fue precisa: las preguntas que no haces en una entrevista son las que después te cuestan. Esa claridad llevó directamente a SafeNow — donde había hecho exactamente las preguntas correctas." },
+      IV:  { phase: 'Capítulo IV — Con propósito',          period: 'Nov 2024 → presente  ·  Múnich',         intro: "SafeNow abrió un nuevo capítulo — uno donde el trabajo se elige por lo que significa, no solo por lo que paga. Si SafeNow trata de ayudar a personas en emergencias, Famlo trata de ayudar a familias en el día a día — un OS familiar construido sobre la idea de que todo empieza por cómo se comunican las familias, con la IA atando el resto. Dos problemas distintos, una sola convicción: el software debería hacer la vida de las personas genuinamente mejor." }
+    },
+    de: {
+      I:   { phase: 'Kapitel I — Die Schule des Machens',   period: '2010 – 2018  ·  Santo Domingo, DR',      intro: "Fast neun Jahre bei Claro — einem der größten Telekom-Unternehmen Lateinamerikas — wo Jaime den Weg vom ersten Produktionscode bis zum Leiten von Teams, Coachen von Ingenieuren und Steuern von Transformationsprogrammen ging. Chaotisch, prägend und unersetzlich. Er machte Fehler, lieferte Dinge aus, die echten Umsatz bewegten, und bildete die Überzeugung heraus, dass großartiges Engineering ebenso sehr über Menschen und Prozesse läuft wie über Code." },
+      II:  { phase: 'Kapitel II — Moderne Produktunternehmen', period: '2019 – 2024  ·  San Francisco → München', intro: 'Die Telekom-Welt hinter sich lassend, trat Jaime dem Startup- und Scaleup-Zirkel bei — zuerst in San Francisco, dann in München. Ein kompletter Reset: neue Arbeitsweisen, neue Standards für Tempo, neue Erwartungen an Zusammenarbeit und Ownership. Er lernte, was es heißt, unter Wettbewerbsdruck Wert auszuliefern, und wie viel Handwerk in Entscheidungen steckt, die von außen mühelos wirken.' },
+      III: { phase: 'Kapitel III — Krise als Klassenzimmer', period: 'Jan 2024 – Nov 2024  ·  München',         intro: "Im Januar 2024 wurde Jaime von Personio entlassen — dem Unternehmen, das seine Familie nach Deutschland gebracht hatte — in der ersten von dem, was eine Kündigungswelle werden würde. Noch dabei, sich mit jungen Zwillingen in einem neuen Land einzuleben, waren die folgenden Monate ein Crash-Kurs in Resilienz. Nach zehn Wochen Suche hatte er zwei Angebote. Er wählte enmacc mit echter Begeisterung, und innerhalb von zwei Monaten war klar, dass es nicht passte. Die Lektion war präzise: Die Fragen, die du im Interview nicht stellst, sind die, die dich später kosten. Diese Klarheit führte direkt zu SafeNow — wo er genau die richtigen Fragen gestellt hatte." },
+      IV:  { phase: 'Kapitel IV — Sinnorientiert',          period: 'Nov 2024 → heute  ·  München',           intro: "SafeNow eröffnete ein neues Kapitel — eines, in dem die Arbeit nach Bedeutung gewählt wird, nicht nur nach Bezahlung. Wenn es bei SafeNow darum geht, Menschen in Notlagen zu helfen, dann geht es bei Famlo darum, Familien im Alltag zu helfen — ein Familien-OS, gebaut auf der Idee, dass alles damit beginnt, wie Familien kommunizieren, und KI den Rest verbindet. Zwei verschiedene Probleme, eine Überzeugung: Software sollte das Leben der Menschen wirklich besser machen." }
+    }
   };
 
+  // ━━━ Per-element translation dictionaries ━━━
+  const i18n = {
+    en: {
+      'title': 'Jaime Rojas',
+      'tagline': 'Pragmatic · Curious · Resilient · Purposeful',
+      'bio': '<strong>Jaime Rojas</strong> is a backend engineer and builder based in Munich, with 15+ years of experience turning hard problems into working software. By day he\'s a Senior Backend Engineer at <a href="https://safenow.app" target="_blank" rel="noopener">SafeNow</a>. On the side, he\'s building <a href="https://famlo.app" target="_blank" rel="noopener">Famlo</a> — an AI-native family operating system where chores, finances, meals, goals, and the calendar all flow from one place: how families actually talk to each other.',
+      'now.heading': '<strong>Now</strong>',
+      'now.p1': 'By day at SafeNow, by night at Famlo.',
+      'now.p2': 'Going full beast-mode on AI — learning how the new models, tools, and patterns let one builder ship what used to take a small team. Famlo is the lab; every prototype either compounds into the product or teaches why it shouldn\'t.',
+      'now.p3': 'The why starts personal: a young family far from home, and no app that actually held daily life together. The bigger why follows — Famlo would have needed a team a year ago. Today, with AI as leverage, it\'s doable solo, and the families it\'s built for don\'t have to wait for someone else to build it.',
+      'now.p4': 'The deeper bet: AI doesn\'t just speed up the work, it changes what software is allowed to feel like. Famlo\'s signature — communication at the root, modules flowing into each other naturally — only exists because AI can finally be the connective tissue, not a feature in a settings menu.',
+      'work.heading': '<strong>Work</strong>',
+      'work.subtitle': 'Each dot is a chapter — pick a year to read the story.',
+      'phase.I': 'School of doing', 'phase.II': 'Modern product', 'phase.III': 'Crisis classroom', 'phase.IV': 'Purpose-driven',
+      'year.0': 'Sep 2010', 'year.1': 'Apr 2019', 'year.2': 'Jun 2022', 'year.3': 'Jan 2024', 'year.4': 'Apr 2024',
+      'year.5': 'Nov 2024 ' + ARROW_SVG, 'year.6': 'Mar 2026 ' + ARROW_SVG,
+      'slide.0.title': 'Claro — Engineer & Transformation Lead',
+      'slide.0.desc': 'Software Engineer → Lead Engineer → Agile Coach → Transformation Program Manager. Four roles, one company, nine years of compounding learning.',
+      'slide.0.b0': 'Built a unified attention-center platform integrating 30+ systems — cutting rep training from 3 months to 2 weeks',
+      'slide.0.b1': 'Reduced customer wait times 4× and grew prepaid mobile revenue 10×',
+      'slide.0.b2': 'Led a full Agile transformation, coaching 30+ engineers across IT, Legal, Compliance, and QA',
+      'slide.0.b3': 'Launched knowledge-sharing sessions that became a lasting part of company culture',
+      'slide.0.b4': 'Gold Award for portal team excellence in customer service',
+      'slide.1.title': 'Metadata.io — Senior Backend Engineer',
+      'slide.1.desc': 'A B2B demand generation platform in San Francisco. Three years spanning a full platform rewrite and key marketplace integrations that significantly expanded the product\'s commercial reach.',
+      'slide.1.b0': 'Helped redesign a monolith into domain-driven microservices for engineering scale',
+      'slide.1.b1': 'Led the Oracle Eloqua integration from kickoff to pilot — on time, strong adoption',
+      'slide.1.b2': 'Doubled campaign match rates through data-driven optimisation',
+      'slide.1.b3': 'Rewrote the ETL pipeline and restructured Elasticsearch indexes for faster enrichment',
+      'slide.2.title': 'Personio — Software Engineer',
+      'slide.2.desc': 'Europe\'s leading HR platform — and the company that brought Jaime\'s family to Munich. He worked across Payroll Communications and Zero-Trust Security Adoption.',
+      'slide.2.b0': 'Delivered electronic payroll communications end-to-end under audit deadlines, enabling a strategic product launch',
+      'slide.2.b1': 'Led zero-trust adoption and wrote documentation that helped other teams skip the hardest parts',
+      'slide.2.b2': 'Built tooling that unblocked all communications testing when third-party sandboxes failed',
+      'slide.3.title': 'Personio — The layoff',
+      'slide.3.desc': 'January 2024. Jaime was let go in the first wave of layoffs at the company that had brought his family to Munich — the end of Chapter II and the doorway into Chapter III. The story of what came next lives in the chapter intro above.',
+      'slide.4.title': 'enmacc — Software Engineer',
+      'slide.4.desc': 'A European energy trading marketplace. Joined with genuine excitement after a tough job search — and learned quickly that enthusiasm alone can\'t bridge a fundamental mismatch in communication style, expectations, and working culture.',
+      'slide.4.b0': 'Five months that taught more about cultural fit and self-knowledge than any successful role had',
+      'slide.4.b1': 'Reinforced the value of asking the hard questions before signing — a lesson carried forward',
+      'slide.5.title': 'SafeNow — Senior Backend Engineer',
+      'slide.5.desc': 'A personal safety platform built for the moments when seconds count. There are companies you join for the career move, and companies you join because the mission actually means something. SafeNow was the latter — the idea that software could be the difference between someone getting help in time, or not, is not something Jaime takes lightly.',
+      'slide.5.b0': 'Designing and shipping Kotlin backend services built for global scale',
+      'slide.5.b1': 'Championing test automation and continuous engineering improvement',
+      'slide.5.b2': 'Fast-paced environment where quality and pace coexist by design',
+      'slide.6.title': 'Famlo — Family Operating System',
+      'slide.6.desc': 'Built solo, driven by real life. No app actually held the family\'s life together after moving to Munich with twin 5-year-olds. Famlo is the answer — a family OS where communication is the root and everything else derives from it. Families talk, decisions follow, life happens. AI weaves the modules together so a complex platform feels like chatting with another member of the family.',
+      'slide.6.b0': 'Comms-first by design — chores, meals, finances, goals, and calendar all derive from how the family already talks',
+      'slide.6.b1': 'AI ties the modules together so the platform feels like a conversation, not an interface',
+      'slide.6.b2': 'Privacy-first — no trackers, no third-party data sharing',
+      'slide.6.b3': 'Waitlist beta, built entirely solo alongside full-time work',
+      'footer.copyright': '© 2026 Jaime Rojas',
+      'footer.location': 'Munich, Germany',
+      'showMore': 'Show more',
+      'showLess': 'Show less'
+    },
+    es: {
+      'title': 'Jaime Rojas',
+      'tagline': 'Pragmático · Curioso · Resiliente · Con propósito',
+      'bio': '<strong>Jaime Rojas</strong> es ingeniero backend y constructor radicado en Múnich, con más de 15 años de experiencia convirtiendo problemas difíciles en software funcional. De día, Senior Backend Engineer en <a href="https://safenow.app" target="_blank" rel="noopener">SafeNow</a>. En paralelo, construye <a href="https://famlo.app" target="_blank" rel="noopener">Famlo</a> — un sistema operativo familiar nativo en IA donde tareas, finanzas, comidas, metas y el calendario fluyen desde un solo lugar: cómo las familias realmente se hablan.',
+      'now.heading': '<strong>Ahora</strong>',
+      'now.p1': 'De día en SafeNow, de noche en Famlo.',
+      'now.p2': 'En modo bestia total con IA — aprendiendo cómo los nuevos modelos, herramientas y patrones le permiten a una sola persona lanzar lo que antes requería un equipo pequeño. Famlo es el laboratorio; cada prototipo o se compone en el producto, o enseña por qué no debería.',
+      'now.p3': 'El porqué empieza siendo personal: una familia joven lejos de casa, y ninguna app que realmente sostuviera la vida diaria. El porqué mayor sigue: hace un año, Famlo habría necesitado un equipo. Hoy, con la IA como palanca, es viable hacerlo en solitario, y las familias para las que está construido no tienen que esperar a que otro lo construya.',
+      'now.p4': 'La apuesta más profunda: la IA no solo acelera el trabajo, cambia cómo se le permite sentirse al software. La firma de Famlo — la comunicación en la raíz, módulos que fluyen entre sí naturalmente — solo existe porque la IA por fin puede ser el tejido conectivo, no una función dentro de un menú de configuración.',
+      'work.heading': '<strong>Trayectoria</strong>',
+      'work.subtitle': 'Cada punto es un capítulo — elige un año para leer la historia.',
+      'phase.I': 'La escuela del hacer', 'phase.II': 'Producto moderno', 'phase.III': 'La crisis como aula', 'phase.IV': 'Con propósito',
+      'year.0': 'Sep 2010', 'year.1': 'Abr 2019', 'year.2': 'Jun 2022', 'year.3': 'Ene 2024', 'year.4': 'Abr 2024',
+      'year.5': 'Nov 2024 ' + ARROW_SVG, 'year.6': 'Mar 2026 ' + ARROW_SVG,
+      'slide.0.title': 'Claro — Ingeniero & Líder de Transformación',
+      'slide.0.desc': 'Ingeniero de Software → Líder de Ingeniería → Agile Coach → Gerente de Programa de Transformación. Cuatro roles, una empresa, nueve años de aprendizaje compuesto.',
+      'slide.0.b0': 'Construí una plataforma unificada de atención al cliente que integraba más de 30 sistemas — reduciendo el entrenamiento de agentes de 3 meses a 2 semanas',
+      'slide.0.b1': 'Reduje los tiempos de espera de clientes 4× y multipliqué los ingresos de móvil prepago por 10×',
+      'slide.0.b2': 'Lideré una transformación Ágil completa, formando a más de 30 ingenieros en IT, Legal, Cumplimiento y QA',
+      'slide.0.b3': 'Lancé sesiones de transferencia de conocimiento que pasaron a ser parte duradera de la cultura',
+      'slide.0.b4': 'Premio Oro al equipo del portal por excelencia en servicio al cliente',
+      'slide.1.title': 'Metadata.io — Ingeniero Backend Senior',
+      'slide.1.desc': 'Una plataforma B2B de generación de demanda en San Francisco. Tres años que abarcaron una reescritura completa de la plataforma e integraciones clave de marketplace que ampliaron significativamente el alcance comercial del producto.',
+      'slide.1.b0': 'Ayudé a rediseñar un monolito en microservicios orientados a dominio para escalar la ingeniería',
+      'slide.1.b1': 'Lideré la integración con Oracle Eloqua desde el inicio hasta el piloto — a tiempo y con buena adopción',
+      'slide.1.b2': 'Dupliqué las tasas de coincidencia de campañas mediante optimización basada en datos',
+      'slide.1.b3': 'Reescribí el pipeline de ETL y reestructuré los índices de Elasticsearch para un enriquecimiento más rápido',
+      'slide.2.title': 'Personio — Ingeniero de Software',
+      'slide.2.desc': 'La plataforma de RRHH líder en Europa — y la empresa que trajo a la familia de Jaime a Múnich. Trabajó en Comunicaciones de Nómina y Adopción de Seguridad Zero-Trust.',
+      'slide.2.b0': 'Entregué las comunicaciones electrónicas de nómina de extremo a extremo dentro de plazos de auditoría, habilitando un lanzamiento estratégico de producto',
+      'slide.2.b1': 'Lideré la adopción de zero-trust y escribí documentación que ayudó a otros equipos a saltarse las partes más difíciles',
+      'slide.2.b2': 'Construí tooling que desbloqueó todas las pruebas de comunicaciones cuando los sandboxes de terceros fallaron',
+      'slide.3.title': 'Personio — El despido',
+      'slide.3.desc': 'Enero 2024. Jaime fue despedido en la primera ola de despidos en la empresa que había traído a su familia a Múnich — el final del Capítulo II y la entrada al Capítulo III. La historia de lo que vino después vive en la introducción del capítulo arriba.',
+      'slide.4.title': 'enmacc — Ingeniero de Software',
+      'slide.4.desc': 'Un marketplace europeo de comercio energético. Me uní con entusiasmo genuino tras una búsqueda dura de empleo — y aprendí rápido que el entusiasmo por sí solo no puede salvar un desajuste fundamental en estilo de comunicación, expectativas y cultura de trabajo.',
+      'slide.4.b0': 'Cinco meses que enseñaron más sobre encaje cultural y autoconocimiento que cualquier rol exitoso anterior',
+      'slide.4.b1': 'Reforzó el valor de hacer las preguntas difíciles antes de firmar — una lección que llevo conmigo',
+      'slide.5.title': 'SafeNow — Ingeniero Backend Senior',
+      'slide.5.desc': 'Una plataforma de seguridad personal construida para los momentos donde los segundos cuentan. Hay empresas a las que entras por el movimiento de carrera, y empresas a las que entras porque la misión realmente significa algo. SafeNow fue la segunda — la idea de que el software pueda ser la diferencia entre que alguien reciba ayuda a tiempo o no, no es algo que Jaime tome a la ligera.',
+      'slide.5.b0': 'Diseñando y desplegando servicios backend en Kotlin construidos para escala global',
+      'slide.5.b1': 'Impulsando la automatización de pruebas y la mejora continua de ingeniería',
+      'slide.5.b2': 'Entorno de ritmo rápido donde calidad y velocidad coexisten por diseño',
+      'slide.6.title': 'Famlo — Sistema Operativo Familiar',
+      'slide.6.desc': 'Construido en solitario, impulsado por la vida real. Ninguna app realmente sostenía la vida de la familia tras mudarse a Múnich con gemelos de 5 años. Famlo es la respuesta — un OS familiar donde la comunicación es la raíz y todo lo demás deriva de ella. Las familias hablan, las decisiones siguen, la vida ocurre. La IA entreteje los módulos para que una plataforma compleja se sienta como charlar con otro miembro de la familia.',
+      'slide.6.b0': 'Comunicación primero por diseño — tareas, comidas, finanzas, metas y calendario derivan todos de cómo la familia ya habla',
+      'slide.6.b1': 'La IA enlaza los módulos para que la plataforma se sienta como una conversación, no como una interfaz',
+      'slide.6.b2': 'Privacidad primero — sin trackers, sin compartir datos con terceros',
+      'slide.6.b3': 'Beta de lista de espera, construido completamente en solitario junto al trabajo a tiempo completo',
+      'footer.copyright': '© 2026 Jaime Rojas',
+      'footer.location': 'Múnich, Alemania',
+      'showMore': 'Ver más',
+      'showLess': 'Ver menos'
+    },
+    de: {
+      'title': 'Jaime Rojas',
+      'tagline': 'Pragmatisch · Neugierig · Resilient · Sinnorientiert',
+      'bio': '<strong>Jaime Rojas</strong> ist Backend-Ingenieur und Builder mit Sitz in München, mit über 15 Jahren Erfahrung darin, schwierige Probleme in funktionierende Software zu verwandeln. Tagsüber ist er Senior Backend Engineer bei <a href="https://safenow.app" target="_blank" rel="noopener">SafeNow</a>. Nebenher baut er <a href="https://famlo.app" target="_blank" rel="noopener">Famlo</a> — ein KI-natives Familien-Betriebssystem, in dem Aufgaben, Finanzen, Mahlzeiten, Ziele und der Kalender aus einem einzigen Ort fließen: wie Familien tatsächlich miteinander reden.',
+      'now.heading': '<strong>Jetzt</strong>',
+      'now.p1': 'Tagsüber bei SafeNow, nachts an Famlo.',
+      'now.p2': 'Voll im Beast-Mode mit KI — verstehen, wie die neuen Modelle, Tools und Patterns es einer Person ermöglichen, das auszuliefern, wofür früher ein kleines Team nötig war. Famlo ist das Labor; jeder Prototyp wird entweder Teil des Produkts oder zeigt, warum er es nicht werden sollte.',
+      'now.p3': 'Das Warum beginnt persönlich: eine junge Familie weit weg von zu Hause, und keine App, die den Alltag wirklich zusammenhält. Das größere Warum folgt — vor einem Jahr hätte Famlo ein Team gebraucht. Heute, mit KI als Hebel, ist es solo machbar, und die Familien, für die es gebaut wird, müssen nicht darauf warten, dass jemand anderes es baut.',
+      'now.p4': 'Die tiefere Wette: KI beschleunigt nicht nur die Arbeit, sie verändert, wie sich Software anfühlen darf. Die Signatur von Famlo — Kommunikation an der Wurzel, Module, die natürlich ineinandergreifen — existiert nur, weil KI endlich das verbindende Gewebe sein kann, nicht ein Eintrag in einem Einstellungsmenü.',
+      'work.heading': '<strong>Werdegang</strong>',
+      'work.subtitle': 'Jeder Punkt ist ein Kapitel — wähle ein Jahr, um die Geschichte zu lesen.',
+      'phase.I': 'Schule des Machens', 'phase.II': 'Modernes Produkt', 'phase.III': 'Krise als Klassenzimmer', 'phase.IV': 'Sinnorientiert',
+      'year.0': 'Sep 2010', 'year.1': 'Apr 2019', 'year.2': 'Jun 2022', 'year.3': 'Jan 2024', 'year.4': 'Apr 2024',
+      'year.5': 'Nov 2024 ' + ARROW_SVG, 'year.6': 'Mär 2026 ' + ARROW_SVG,
+      'slide.0.title': 'Claro — Ingenieur & Transformations-Lead',
+      'slide.0.desc': 'Software Engineer → Lead Engineer → Agile Coach → Transformations-Programmleiter. Vier Rollen, ein Unternehmen, neun Jahre kumuliertes Lernen.',
+      'slide.0.b0': 'Eine vereinheitlichte Service-Plattform aufgebaut, die 30+ Systeme integriert — Mitarbeiterschulung von 3 Monaten auf 2 Wochen reduziert',
+      'slide.0.b1': 'Wartezeiten der Kunden 4× reduziert und Prepaid-Mobile-Umsatz 10× gesteigert',
+      'slide.0.b2': 'Eine vollständige Agile-Transformation geleitet, mit Coaching von über 30 Ingenieuren aus IT, Legal, Compliance und QA',
+      'slide.0.b3': 'Knowledge-Sharing-Sessions ins Leben gerufen, die zu einem festen Bestandteil der Unternehmenskultur wurden',
+      'slide.0.b4': 'Gold Award für Portal-Team-Exzellenz im Kundenservice',
+      'slide.1.title': 'Metadata.io — Senior Backend Engineer',
+      'slide.1.desc': 'Eine B2B-Demand-Generation-Plattform in San Francisco. Drei Jahre, die eine vollständige Plattform-Neuschreibung und wichtige Marketplace-Integrationen umfassten und die kommerzielle Reichweite des Produkts deutlich erweiterten.',
+      'slide.1.b0': 'Half mit, einen Monolithen in domain-driven Microservices umzubauen, um Engineering-Skalierung zu ermöglichen',
+      'slide.1.b1': 'Leitete die Oracle-Eloqua-Integration vom Start bis zum Pilot — pünktlich, starke Adoption',
+      'slide.1.b2': 'Verdoppelte die Match-Raten von Kampagnen durch datenbasierte Optimierung',
+      'slide.1.b3': 'Schrieb die ETL-Pipeline neu und strukturierte die Elasticsearch-Indizes für schnellere Enrichment-Prozesse',
+      'slide.2.title': 'Personio — Software Engineer',
+      'slide.2.desc': 'Europas führende HR-Plattform — und das Unternehmen, das Jaimes Familie nach München brachte. Er arbeitete an Payroll Communications und Zero-Trust Security Adoption.',
+      'slide.2.b0': 'Lieferte elektronische Payroll-Communications end-to-end unter Audit-Fristen aus und ermöglichte damit einen strategischen Produkt-Launch',
+      'slide.2.b1': 'Leitete die Zero-Trust-Adoption und schrieb Dokumentation, die anderen Teams half, die härtesten Teile zu überspringen',
+      'slide.2.b2': 'Baute Tooling, das alle Communications-Tests entsperrte, als Third-Party-Sandboxes ausfielen',
+      'slide.3.title': 'Personio — Die Kündigung',
+      'slide.3.desc': 'Januar 2024. Jaime wurde in der ersten Kündigungswelle bei dem Unternehmen entlassen, das seine Familie nach München gebracht hatte — das Ende von Kapitel II und der Eingang zu Kapitel III. Die Geschichte dessen, was danach kam, lebt in der Kapiteleinleitung oben.',
+      'slide.4.title': 'enmacc — Software Engineer',
+      'slide.4.desc': 'Ein europäischer Energiehandelsmarktplatz. Trat mit echter Begeisterung nach einer harten Jobsuche bei — und lernte schnell, dass Begeisterung allein einen grundlegenden Mismatch in Kommunikationsstil, Erwartungen und Arbeitskultur nicht überbrücken kann.',
+      'slide.4.b0': 'Fünf Monate, die mehr über kulturellen Fit und Selbsterkenntnis lehrten als jede erfolgreiche Rolle zuvor',
+      'slide.4.b1': 'Verstärkte den Wert, vor der Unterschrift die harten Fragen zu stellen — eine Lektion, die ich mitnehme',
+      'slide.5.title': 'SafeNow — Senior Backend Engineer',
+      'slide.5.desc': 'Eine Plattform für persönliche Sicherheit, gebaut für die Momente, in denen Sekunden zählen. Es gibt Unternehmen, denen man wegen des Karriereschritts beitritt, und Unternehmen, denen man beitritt, weil die Mission wirklich etwas bedeutet. SafeNow war Letzteres — die Vorstellung, dass Software der Unterschied sein kann, ob jemand rechtzeitig Hilfe bekommt oder nicht, nimmt Jaime nicht leicht.',
+      'slide.5.b0': 'Design und Auslieferung von Kotlin-Backend-Services, gebaut für globale Skalierung',
+      'slide.5.b1': 'Vorantreiben von Test-Automatisierung und kontinuierlicher Engineering-Verbesserung',
+      'slide.5.b2': 'Schnelles Umfeld, in dem Qualität und Tempo gewollt nebeneinander bestehen',
+      'slide.6.title': 'Famlo — Familien-Betriebssystem',
+      'slide.6.desc': 'Solo gebaut, vom echten Leben angetrieben. Keine App hielt das Leben der Familie wirklich zusammen, nachdem sie mit fünfjährigen Zwillingen nach München gezogen war. Famlo ist die Antwort — ein Familien-OS, in dem Kommunikation die Wurzel ist und alles andere daraus entsteht. Familien reden, Entscheidungen folgen, Leben passiert. KI verwebt die Module, sodass sich eine komplexe Plattform anfühlt, als chatte man mit einem weiteren Mitglied der Familie.',
+      'slide.6.b0': 'Comms-first im Design — Aufgaben, Mahlzeiten, Finanzen, Ziele und Kalender entstehen alle daraus, wie die Familie ohnehin redet',
+      'slide.6.b1': 'KI verknüpft die Module, sodass sich die Plattform wie ein Gespräch anfühlt, nicht wie ein Interface',
+      'slide.6.b2': 'Privacy-first — keine Tracker, keine Datenweitergabe an Dritte',
+      'slide.6.b3': 'Waitlist-Beta, vollständig solo neben dem Vollzeit-Job gebaut',
+      'footer.copyright': '© 2026 Jaime Rojas',
+      'footer.location': 'München, Deutschland',
+      'showMore': 'Mehr anzeigen',
+      'showLess': 'Weniger anzeigen'
+    }
+  };
+
+  // ━━━ Language detection + apply ━━━
+  function detectLang() {
+    try {
+      const stored = localStorage.getItem('lang');
+      if (stored && i18n[stored]) return stored;
+    } catch (e) {}
+    const browser = (navigator.language || 'en').toLowerCase();
+    if (browser.startsWith('es')) return 'es';
+    if (browser.startsWith('de')) return 'de';
+    return 'en';
+  }
+
+  function applyLanguage(newLang) {
+    if (!i18n[newLang]) return;
+    lang = newLang;
+    html.lang = newLang;
+    const dict = i18n[newLang];
+    if (dict.title) titleEl.textContent = dict.title;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (dict[key] !== undefined) el.textContent = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.dataset.i18nHtml;
+      if (dict[key] !== undefined) el.innerHTML = dict[key];
+    });
+    langBtns.forEach(b => {
+      b.setAttribute('aria-pressed', b.dataset.lang === newLang ? 'true' : 'false');
+    });
+    setChapterHeader(slides[current].dataset.chapter);
+    label.textContent = phaseNames[newLang][current];
+    updateToggleLabels();
+    try { localStorage.setItem('lang', newLang); } catch (e) {}
+  }
+
+  // ━━━ Show-more / show-less (mobile) ━━━
+  function injectSlideToggles() {
+    slides.forEach(slide => {
+      const body = slide.querySelector('.work-body');
+      if (!body || !body.querySelector('ul')) return; // skip slides without bullets
+      const btn = document.createElement('button');
+      btn.className = 'show-more-toggle slide-toggle';
+      btn.type = 'button';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML = '<span class="show-more-label">Show more</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
+      const ul = body.querySelector('ul');
+      ul.insertAdjacentElement('afterend', btn);
+      btn.addEventListener('click', () => {
+        const expanded = slide.classList.toggle('expanded');
+        btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        updateToggleLabels();
+      });
+    });
+  }
+
+  function updateToggleLabels() {
+    const dict = i18n[lang];
+    if (!dict) return;
+    document.querySelectorAll('.show-more-toggle').forEach(btn => {
+      const parent = btn.closest('.chapter-header, .carousel-slide');
+      const expanded = parent && parent.classList.contains('expanded');
+      const labelEl = btn.querySelector('.show-more-label');
+      if (labelEl) labelEl.textContent = expanded ? dict.showLess : dict.showMore;
+    });
+  }
+
+  const chHeader = document.getElementById('chapter-header');
+  const chToggle = document.getElementById('ch-toggle');
+  if (chToggle && chHeader) {
+    chToggle.addEventListener('click', () => {
+      const expanded = chHeader.classList.toggle('expanded');
+      chToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      updateToggleLabels();
+    });
+  }
+
   function setChapterHeader(key) {
-    const c = chapters[key];
+    const c = chapters[lang][key];
     if (!c) return;
     chPhase.textContent  = c.phase;
     chPeriod.textContent = c.period;
@@ -855,6 +1197,12 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
     // Only update the shared chapter header when the chapter actually changes
     if (!sameChapter) {
       setChapterHeader(newSlide.dataset.chapter);
+      // Reset the chapter intro to collapsed on chapter change (mobile UX)
+      if (chHeader) {
+        chHeader.classList.remove('expanded');
+        if (chToggle) chToggle.setAttribute('aria-expanded', 'false');
+        updateToggleLabels();
+      }
     }
 
     // update year buttons
@@ -867,10 +1215,15 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
     syncGroupActive();
 
     // update label + arrows
-    label.textContent = phaseNames[current];
+    label.textContent = phaseNames[lang][current];
     btnPrev.disabled = current === 0;
     btnNext.disabled = current === total - 1;
   }
+
+  // Lang button clicks
+  langBtns.forEach(b => {
+    b.addEventListener('click', () => applyLanguage(b.dataset.lang));
+  });
 
   // Year button clicks
   years.forEach((btn, i) => {
@@ -888,11 +1241,11 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
   });
 
   // Init state
-  setChapterHeader(slides[current].dataset.chapter);
-  label.textContent = phaseNames[current];
+  syncGroupActive();
+  injectSlideToggles();
   btnPrev.disabled = current === 0;
   btnNext.disabled = current === total - 1;
-  syncGroupActive();
+  applyLanguage(detectLang());
 })();
 </script>
 </body>
