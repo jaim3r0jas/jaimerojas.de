@@ -275,6 +275,14 @@ hr.double {
 
 /* Year label below the dot */
 .tl-year-label { line-height: 1; }
+.tl-year-label .tl-arrow {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-left: 0.15em;
+  vertical-align: -0.12em;
+  stroke: currentColor;
+}
 
 /* Tiny company shorthand below the year */
 .tl-company {
@@ -510,9 +518,10 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
       <h2 id="now-heading"><strong>Now</strong></h2>
     </div>
     <div class="now-body">
-      <p>Working full-time at SafeNow while actively building Famlo on the side — currently in waitlist beta and growing. Most evenings and weekends go into product decisions, architecture, and the small details that make an app feel genuinely useful rather than just functional.</p>
-      <p>Living the expat life in Munich with his wife and 5-year-old twins — navigating school, a new city, three languages, and the beautiful chaos of raising small humans far from home. That daily reality is the whole reason Famlo exists.</p>
-      <p>Thinking a lot about: how families actually coordinate (versus how apps assume they do), the tradeoffs of building solo at pace, and what it really means to ship software that solves a problem you live every single day.</p>
+      <p>By day at SafeNow, by night at Famlo.</p>
+      <p>Going full beast-mode on AI — learning how the new models, tools, and patterns let one builder ship what used to take a small team. Famlo is the lab; every prototype either compounds into the product or teaches why it shouldn't.</p>
+      <p>The why starts personal: a young family far from home, and no app that actually held daily life together. The bigger why follows — Famlo would have needed a team a year ago. Today, with AI as leverage, it's doable solo, and the families it's built for don't have to wait for someone else to build it.</p>
+      <p>The deeper bet: AI doesn't just speed up the work, it changes what software is allowed to feel like. Famlo's signature — communication at the root, modules flowing into each other naturally — only exists because AI can finally be the connective tissue, not a feature in a settings menu.</p>
     </div>
   </section>
 
@@ -526,7 +535,7 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
     </div>
     <p class="section-subtitle">Each dot is a chapter — pick a year to read the story.</p>
 
-    <!-- Timeline: 4 chapter groups, 6 dots total -->
+    <!-- Timeline: 4 chapter groups, 7 dots total -->
     <div class="timeline-nav" role="tablist" aria-label="Career timeline">
 
       <div class="phase-group" data-phase="I">
@@ -534,7 +543,7 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         <div class="phase-dots">
           <button class="tl-year" data-slide="0" role="tab" aria-selected="false" aria-controls="slide-0">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">2010</span>
+            <span class="tl-year-label">Sep 2010</span>
             <span class="tl-company">Claro</span>
           </button>
         </div>
@@ -545,12 +554,12 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         <div class="phase-dots">
           <button class="tl-year" data-slide="1" role="tab" aria-selected="false" aria-controls="slide-1">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">2019</span>
+            <span class="tl-year-label">Apr 2019</span>
             <span class="tl-company">Metadata</span>
           </button>
           <button class="tl-year" data-slide="2" role="tab" aria-selected="false" aria-controls="slide-2">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">2022</span>
+            <span class="tl-year-label">Jun 2022</span>
             <span class="tl-company">Personio</span>
           </button>
         </div>
@@ -561,7 +570,12 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         <div class="phase-dots">
           <button class="tl-year" data-slide="3" role="tab" aria-selected="false" aria-controls="slide-3">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">2024</span>
+            <span class="tl-year-label">Jan 2024</span>
+            <span class="tl-company">Personio</span>
+          </button>
+          <button class="tl-year" data-slide="4" role="tab" aria-selected="false" aria-controls="slide-4">
+            <div class="tl-dot"></div>
+            <span class="tl-year-label">Apr 2024</span>
             <span class="tl-company">enmacc</span>
           </button>
         </div>
@@ -570,14 +584,14 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
       <div class="phase-group" data-phase="IV">
         <span class="phase-label">Purpose-driven</span>
         <div class="phase-dots">
-          <button class="tl-year" data-slide="4" role="tab" aria-selected="false" aria-controls="slide-4">
+          <button class="tl-year" data-slide="5" role="tab" aria-selected="false" aria-controls="slide-5">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">2024 →</span>
+            <span class="tl-year-label">Nov 2024 <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
             <span class="tl-company">SafeNow</span>
           </button>
-          <button class="tl-year active" data-slide="5" role="tab" aria-selected="true" aria-controls="slide-5">
+          <button class="tl-year active" data-slide="6" role="tab" aria-selected="true" aria-controls="slide-6">
             <div class="tl-dot"></div>
-            <span class="tl-year-label">2026 →</span>
+            <span class="tl-year-label">Mar 2026 <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
             <span class="tl-company">Famlo</span>
           </button>
         </div>
@@ -658,8 +672,19 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         </div>
       </div>
 
-      <!-- SLIDE 3 — Chapter III: enmacc -->
+      <!-- SLIDE 3 — Chapter III: Personio layoff (entry into the chapter) -->
       <div class="carousel-slide" id="slide-3" role="tabpanel" data-chapter="III">
+        <div class="work-row">
+          <div class="work-thumb"><img src="images/personio.svg" alt="Personio" /></div>
+          <div class="work-body">
+            <h3>Personio — The layoff</h3>
+            <p>January 2024. Jaime was let go in the first wave of layoffs at the company that had brought his family to Munich — the end of Chapter II and the doorway into Chapter III. The story of what came next lives in the chapter intro above.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 — Chapter III: enmacc -->
+      <div class="carousel-slide" id="slide-4" role="tabpanel" data-chapter="III">
         <div class="work-row">
           <div class="work-thumb"><img src="images/enmacc.svg" alt="enmacc" /></div>
           <div class="work-body">
@@ -677,8 +702,8 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         </div>
       </div>
 
-      <!-- SLIDE 4 — Chapter IV: SafeNow -->
-      <div class="carousel-slide" id="slide-4" role="tabpanel" data-chapter="IV">
+      <!-- SLIDE 5 — Chapter IV: SafeNow -->
+      <div class="carousel-slide" id="slide-5" role="tabpanel" data-chapter="IV">
         <div class="work-row">
           <div class="work-thumb"><img src="images/safenow.svg" alt="SafeNow" /></div>
           <div class="work-body">
@@ -697,8 +722,8 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
         </div>
       </div>
 
-      <!-- SLIDE 5 — Chapter IV: Famlo -->
-      <div class="carousel-slide active" id="slide-5" role="tabpanel" data-chapter="IV">
+      <!-- SLIDE 6 — Chapter IV: Famlo -->
+      <div class="carousel-slide active" id="slide-6" role="tabpanel" data-chapter="IV">
         <div class="work-row">
           <div class="work-thumb"><img src="images/famlo.svg" alt="Famlo" /></div>
           <div class="work-body">
@@ -758,12 +783,13 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
   const chPeriod = document.getElementById('ch-period');
   const chIntro  = document.getElementById('ch-intro');
   const total   = slides.length;
-  let current   = 5; // start on most recent (Famlo)
+  let current   = 6; // start on most recent (Famlo)
 
   const phaseNames = [
     'Chapter I — Claro',
     'Chapter II — Metadata.io',
     'Chapter II — Personio',
+    'Chapter III — Personio (layoff)',
     'Chapter III — enmacc',
     'Chapter IV — SafeNow',
     'Chapter IV — Famlo'
