@@ -221,7 +221,8 @@ hr.double {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 /* The timeline: 4 phase-groups, each containing 1-2 dots.
-   Phase labels always visible above the dot row. */
+   Phase labels always visible above the dot row.
+   Color tokens: ink by default, original palette only when work section is hovered. */
 .timeline-nav {
   position: relative;
   display: flex;
@@ -230,6 +231,14 @@ hr.double {
   margin-bottom: 2.4rem;
   padding: 0 0.2rem;
   gap: 1rem;
+  --tl-default: var(--ink);
+  --tl-hover: var(--ink);
+  --tl-active: var(--ink);
+}
+section[aria-labelledby="work-heading"]:hover .timeline-nav {
+  --tl-default: var(--accent-warm);
+  --tl-hover: var(--accent);
+  --tl-active: var(--accent-dark);
 }
 /* Horizontal track line — runs through the row of dots */
 .timeline-nav::before {
@@ -256,12 +265,12 @@ hr.double {
   font-size: 9.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent-warm);
+  color: var(--tl-default);
   white-space: nowrap;
   transition: color 0.2s;
 }
-.phase-group:hover .phase-label { color: var(--accent); }
-.phase-group.has-active .phase-label { color: var(--accent-dark); }
+.phase-group:hover .phase-label { color: var(--tl-hover); }
+.phase-group.has-active .phase-label { color: var(--tl-active); }
 
 .phase-dots {
   display: flex;
@@ -275,19 +284,19 @@ hr.double {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   background: none; border: none; cursor: pointer;
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em;
-  color: var(--accent-warm); transition: color 0.2s;
+  color: var(--tl-default); transition: color 0.2s;
   padding: 0;
 }
-.tl-year:hover { color: var(--accent); }
+.tl-year:hover { color: var(--tl-hover); }
 .tl-year:hover .tl-dot {
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--tl-hover);
+  background: var(--tl-hover);
 }
 
 .tl-dot {
   width: 10px; height: 10px;
   border-radius: 50%;
-  border: 1.5px solid var(--accent-warm);
+  border: 1.5px solid var(--tl-default);
   background: var(--bg);
   transition: all 0.2s;
 }
@@ -307,20 +316,20 @@ hr.double {
 .tl-company {
   font-size: 9px;
   letter-spacing: 0.04em;
-  color: var(--accent-warm);
+  color: var(--tl-default);
   margin-top: 1px;
   transition: color 0.2s;
 }
-.tl-year:hover .tl-company { color: var(--accent); }
+.tl-year:hover .tl-company { color: var(--tl-hover); }
 
 /* Active year */
-.tl-year.active { color: var(--accent-dark); }
+.tl-year.active { color: var(--tl-active); }
 .tl-year.active .tl-dot {
   width: 10px; height: 10px;
-  border-color: var(--accent-dark);
-  background: var(--accent-dark);
+  border-color: var(--tl-active);
+  background: var(--tl-active);
 }
-.tl-year.active .tl-company { color: var(--accent-dark); }
+.tl-year.active .tl-company { color: var(--tl-active); }
 
 /* Slides container */
 /* Shared chapter header (phase / period / intro) sits above the slides.
