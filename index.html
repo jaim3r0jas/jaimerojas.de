@@ -6,7 +6,7 @@
 <title>Jaime Rojas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&family=Inter:wght@300..700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -20,6 +20,7 @@
   --accent-warm: #B8860B;
   --highlight: #FFEF8D;
   --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
   --mono: 'DM Mono', 'Courier New', monospace;
   --max: 1320px;
   --content-max: 960px;
@@ -28,11 +29,11 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--mono);
-  font-size: 13.5px;
-  line-height: 1.7;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.65;
   font-weight: 400;
-  letter-spacing: -0.1px;
+  letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
 }
 .site { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
