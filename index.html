@@ -15,7 +15,9 @@
   --ink-muted: #555;
   --ink-faint: #b8b5ae;
   --accent: #E63946;
-  --accent-cool: #2954D4;
+  --accent-dark: #B82B38;
+  --accent-cool: #1E5BFF;
+  --accent-warm: #B8860B;
   --highlight: #FFEF8D;
   --serif: 'Playfair Display', Georgia, serif;
   --mono: 'DM Mono', 'Courier New', monospace;
@@ -107,7 +109,9 @@ img:hover,
   font-weight: 400; line-height: 1.1; letter-spacing: -0.01em;
   white-space: nowrap;
   font-style: italic;
+  transition: color 0.3s ease;
 }
+.masthead:hover h1.display { color: var(--accent-cool); }
 .handle-pill {
   display: inline-block;
   font-family: var(--mono); font-size: 11.5px;
@@ -135,31 +139,41 @@ img:hover,
 
 /* Bio + photo paired hover: image colorizes when hovering anywhere in the bio */
 .bio:hover .bio-portrait img { filter: grayscale(0%); }
+.bio:hover .bio-portrait { box-shadow: 0 0 0 2px var(--ink); }
+.bio:hover .bio-text a { color: var(--accent); }
+.bio:hover .bio-text strong { color: var(--accent-cool); }
 .bio-text p:last-child { margin-bottom: 0; }
-.bio-text strong { font-weight: 600; }
+.bio-text strong { font-weight: 600; transition: color 0.3s ease; }
 .bio-portrait {
   width: 200px; height: 200px;
   background: transparent;
-  border: 3px solid var(--ink);
   border-radius: 50%;
   overflow: hidden; flex-shrink: 0;
   align-self: center;
+  box-shadow: 0 0 0 3px var(--ink);
+  transition: box-shadow 0.4s ease;
 }
 .bio-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* Section heading */
 .section-heading { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem; }
-.section-heading svg { width: 18px; height: 18px; color: var(--ink); flex-shrink: 0; }
-.section-heading h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.01em; font-style: italic; }
+.section-heading svg { width: 18px; height: 18px; color: var(--ink); flex-shrink: 0; transition: color 0.3s ease; }
+.section-heading h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.01em; font-style: italic; transition: color 0.3s ease; }
+
+/* Section-wide paired hover: title + icon light up in cool accent
+   when hovering anywhere inside Now or Work */
+section:hover > .section-heading h2,
+section:hover > .section-heading svg { color: var(--accent-cool); }
 
 /* Section subtitle — small italic editorial caption */
 .section-subtitle {
   font-family: var(--serif);
   font-size: 1rem;
   font-style: italic;
-  color: var(--ink-muted);
+  color: var(--ink);
   line-height: 1.4;
   margin: -0.2rem 0 0.4rem;
+  padding-bottom: 1rem;
 }
 
 /* Section content — bio, now, work — caps at a readable width within the wider page,
@@ -223,13 +237,12 @@ hr.double {
   font-size: 9.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--accent-warm);
   white-space: nowrap;
   transition: color 0.2s;
 }
-.phase-group:hover .phase-label,
-.phase-group.has-active .phase-label { color: var(--ink); }
 .phase-group:hover .phase-label { color: var(--accent); }
+.phase-group.has-active .phase-label { color: var(--accent-dark); }
 
 .phase-dots {
   display: flex;
@@ -243,7 +256,7 @@ hr.double {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   background: none; border: none; cursor: pointer;
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em;
-  color: var(--ink-faint); transition: color 0.2s;
+  color: var(--accent-warm); transition: color 0.2s;
   padding: 0;
 }
 .tl-year:hover { color: var(--accent); }
@@ -255,7 +268,7 @@ hr.double {
 .tl-dot {
   width: 10px; height: 10px;
   border-radius: 50%;
-  border: 1.5px solid var(--ink-faint);
+  border: 1.5px solid var(--accent-warm);
   background: var(--bg);
   transition: all 0.2s;
 }
@@ -267,20 +280,20 @@ hr.double {
 .tl-company {
   font-size: 9px;
   letter-spacing: 0.04em;
-  color: var(--ink-faint);
+  color: var(--accent-warm);
   margin-top: 1px;
   transition: color 0.2s;
 }
 .tl-year:hover .tl-company { color: var(--accent); }
 
 /* Active year */
-.tl-year.active { color: var(--ink); }
+.tl-year.active { color: var(--accent-dark); }
 .tl-year.active .tl-dot {
   width: 10px; height: 10px;
-  border-color: var(--ink);
-  background: var(--ink);
+  border-color: var(--accent-dark);
+  background: var(--accent-dark);
 }
-.tl-year.active .tl-company { color: var(--ink); }
+.tl-year.active .tl-company { color: var(--accent-dark); }
 
 /* Slides container */
 /* Shared chapter header (phase / period / intro) sits above the slides.
@@ -366,7 +379,7 @@ hr.double {
 }
 .work-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.work-body h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 400; font-style: italic; line-height: 1.25; margin-bottom: 0.55rem; }
+.work-body h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 400; font-style: italic; line-height: 1.25; margin-bottom: 0.55rem; transition: color 0.3s ease; }
 .work-body p { font-size: 13.5px; color: var(--ink); line-height: 1.65; margin-bottom: 0.6rem; }
 .work-body ul { list-style: none; padding: 0; margin-bottom: 0.85rem; }
 .work-body ul li { font-size: 13px; color: var(--ink); padding: 0.1rem 0 0.1rem 1rem; position: relative; line-height: 1.6; }
@@ -380,6 +393,7 @@ hr.double {
 .work-row:hover .work-thumb {
   border-color: var(--accent);
 }
+.work-row:hover .work-body h3 { color: var(--accent-cool); }
 .work-link {
   display: inline-flex; align-items: center; gap: 0.3rem;
   font-size: 12.5px; font-weight: 500;
@@ -493,7 +507,7 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
   <section aria-labelledby="now-heading">
     <div class="section-heading">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      <h2 id="now-heading">Now</h2>
+      <h2 id="now-heading"><strong>Now</strong></h2>
     </div>
     <div class="now-body">
       <p>Working full-time at SafeNow while actively building Famlo on the side — currently in waitlist beta and growing. Most evenings and weekends go into product decisions, architecture, and the small details that make an app feel genuinely useful rather than just functional.</p>
@@ -508,7 +522,7 @@ footer { padding: 2.2rem 0 3rem; display: flex; justify-content: space-between; 
   <section aria-labelledby="work-heading">
     <div class="section-heading">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-      <h2 id="work-heading">Work</h2>
+      <h2 id="work-heading"><strong>Work</strong></h2>
     </div>
     <p class="section-subtitle">Each dot is a chapter — pick a year to read the story.</p>
 
