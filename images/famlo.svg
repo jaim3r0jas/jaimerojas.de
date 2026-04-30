@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 145 100" width="145" height="100">
+  <rect width="145" height="100" fill="#FFE9DA"/>
+
+  <!-- Wordmark, centered -->
+  <text x="72.5" y="58" font-family="Arial Black, Helvetica, sans-serif" font-size="22" fill="#0E0E0E"
+        text-anchor="middle" font-weight="900" letter-spacing="-1.2">famlo</text>
+
+  <!-- Simpsons accent: tiny Bart head in bottom-right corner -->
+  <g transform="translate(128 90)">
+    <ellipse cx="0" cy="0" rx="8" ry="7" fill="#FFD90F" stroke="#000" stroke-width="1.4"/>
+    <path d="M -7 -3 L -5 -9 L -2 -4 L 0 -10 L 2 -4 L 5 -10 L 7 -3 Z"
+          fill="#FFD90F" stroke="#000" stroke-width="1.4" stroke-linejoin="round"/>
+    <circle cx="-2" cy="-1" r="1.4" fill="#fff" stroke="#000" stroke-width="0.6"/>
+    <circle cx="-1.7" cy="-1" r="0.6" fill="#000"/>
+    <circle cx="2.2" cy="-1" r="1.4" fill="#fff" stroke="#000" stroke-width="0.6"/>
+    <circle cx="2.5" cy="-1" r="0.6" fill="#000"/>
+  </g>
+</svg>

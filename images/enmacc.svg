@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 145 100" width="145" height="100">
+  <rect width="145" height="100" fill="#0A1628"/>
+
+  <!-- Green dot mark + wordmark, centered together -->
+  <circle cx="38" cy="50" r="5" fill="#3DD68C"/>
+  <text x="48" y="56" font-family="Arial Black, Helvetica, sans-serif" font-size="18" fill="#fff"
+        font-weight="900" letter-spacing="-0.6">enmacc</text>
+
+  <!-- Simpsons accent: tiny yellow lightning bolt in corner -->
+  <g transform="translate(128 88)">
+    <polygon points="0,-8 -5,2 -1,2 -3,8 5,-2 1,-2 3,-8"
+             fill="#FFD90F" stroke="#000" stroke-width="1.2" stroke-linejoin="round"/>
+  </g>
+</svg>
